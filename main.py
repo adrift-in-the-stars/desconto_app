@@ -1,0 +1,28 @@
+from src.controllers.pedido_controller import PedidoController
+from src.repositories.pedido_repository import PedidoRepository
+from src.services.pedido_service import PedidoService
+from src.database.connection import DatabaseConnection
+from src.models.pedido import Pedido
+from src.models.desconto import DescontoNormal, DescontoVip, DescontoPremium
+
+if __name__ == "__main__":
+    database = DatabaseConnection()
+    repo = PedidoRepository(database)
+    service = PedidoService(repo)
+    controller = PedidoController(service)
+    
+    pedido1 = Pedido("Leonardo", desconto=DescontoNormal())
+    pedido1.valor_original = 100
+
+    pedido2 = Pedido("Cardia", desconto=DescontoVip())
+    pedido2.valor_original = 200
+
+    pedido3 = Pedido("Da cruz", desconto=DescontoPremium())
+    pedido3.valor_original = 300
+
+
+    controller.adicionar_pedido(pedido1)
+    controller.adicionar_pedido(pedido2)
+    controller.adicionar_pedido(pedido3)
+
+    controller.processar_pedidos()
