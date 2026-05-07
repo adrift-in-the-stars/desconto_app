@@ -1,28 +1,22 @@
-from src.controllers.pedido_controller import PedidoController
-from src.repositories.pedido_repository import PedidoRepository
-from src.services.pedido_service import PedidoService
-from src.database.connection import DatabaseConnection
-from src.models.pedido import Pedido
-from src.models.desconto import DescontoNormal, DescontoVip, DescontoPremium
+from src.app.frameworks.database.memory_database import MemoryDatabase
+from src.app.adapters.repositories.memory_pedido_repository import MemoryPedidoRepository
+from src.app.adapters.controllers.pedido_controller import PedidoController
+from src.app.use_cases.criar_pedido import CriarPedido
 
-if __name__ == "__main__":
-    database = DatabaseConnection()
-    repo = PedidoRepository(database)
-    service = PedidoService(repo)
-    controller = PedidoController(service)
+def main() -> None:
+    database = MemoryDatabase()
+    pedido_gateway = MemoryPedidoRepository(database)
+    criar_pedido_use_case = CriarPedido(pedido_gateway)
+    controller = PedidoController(criar_pedido_use_case)
     
-    pedido1 = Pedido("Leonardo", desconto=DescontoNormal())
-    pedido1.valor_original = 100
+    pedido1 = controller.criar_pedido("Leonardo", 100, "Normal")
+    pedido2 = controller.criar_pedido("Cardia", 200, "Vip")
+    pedido3 = controller.criar_pedido("Da cruz", 300, "Premium")
 
-    pedido2 = Pedido("Cardia", desconto=DescontoVip())
-    pedido2.valor_original = 200
-
-    pedido3 = Pedido("Da cruz", desconto=DescontoPremium())
-    pedido3.valor_original = 300
+    print(pedido1.cliente, pedido1.valor_original, pedido1.valor_final())
+    print(pedido2.cliente, pedido2.valor_original, pedido2.valor_final())
+    print(pedido3.cliente, pedido3.valor_original, pedido3.valor_final())
 
 
-    controller.adicionar_pedido(pedido1)
-    controller.adicionar_pedido(pedido2)
-    controller.adicionar_pedido(pedido3)
-
-    controller.processar_pedidos()
+    if __name__ == "__main__":
+        main()

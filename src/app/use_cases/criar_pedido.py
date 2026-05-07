@@ -19,7 +19,7 @@ class CriarPedido:
         pedido = Pedido(cliente, valor_original, desconto)
         self.pedido_gateway.salvar(pedido)
 
-        return Pedido(cliente, valor_original, desconto)
+        return pedido
     
     def listar_pedidos(self) -> list[Pedido]:
         return self.pedido_gateway.listar()

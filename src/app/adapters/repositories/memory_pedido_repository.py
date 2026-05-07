@@ -3,7 +3,7 @@ from src.app.gateways.pedido_gateway import IPedidoGateway
 from src.app.frameworks.database.memory_database import MemoryDatabase
 
 class MemoryPedidoRepository(IPedidoGateway):
-    def __initi__(self, database: MemoryDatabase):
+    def __init__(self, database: MemoryDatabase):
         self.database = database
 
     def salvar(self, pedido: Pedido) -> None:
