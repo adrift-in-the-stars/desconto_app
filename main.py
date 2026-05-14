@@ -15,8 +15,12 @@ def main() -> None:
     controller.criar_pedido("Cardia", 200, "Vip")
     controller.criar_pedido("Da cruz", 300, "Premium")
 
-    print(controller.listar_pedidos())
+    """print(controller.listar_pedidos())"""
 
+
+    list = controller.listar_pedidos()
+    for pedido in list:
+        print(pedido)
 
 if __name__ == "__main__":
     main()
